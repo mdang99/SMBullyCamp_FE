@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import UserActions from '../Users/UserActions';
 import Modal from '@/components/ui/modal';
+import ConfirmDeleteDialog from '../../../../src/components/ConfirmDeleteDialog';
 
 export default function UserManagement({ users, onAddUser, onDeleteUser }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -10,7 +11,6 @@ export default function UserManagement({ users, onAddUser, onDeleteUser }) {
     onAddUser(newUser);
     setIsModalOpen(false);
   };
-
   return (
     <div>
       <button
@@ -37,7 +37,10 @@ export default function UserManagement({ users, onAddUser, onDeleteUser }) {
                 Username
               </th>
               <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                Password
+                Email
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                Role
               </th>
               <th className="px-6 py-3 text-right text-sm font-semibold text-gray-700 uppercase tracking-wide">
                 Actions
@@ -53,22 +56,17 @@ export default function UserManagement({ users, onAddUser, onDeleteUser }) {
                 </td>
               </tr>
             ) : (
-              users.map((user) => (
+              users.map((user,index) => (
                 <tr
                   key={user.id}
                   className="hover:bg-gray-50 transition-colors"
                 >
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{user.id}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{index + 1}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">{user.username}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-mono">{user.password}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">{user.email}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-mono">{user.role}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-right">
-                    <button
-                      onClick={() => onDeleteUser(user.id)}
-                      className="inline-block bg-red-600 text-white px-4 py-2 rounded-md shadow-sm hover:bg-red-700 transition"
-                      aria-label={`Delete user ${user.username}`}
-                    >
-                      Delete
-                    </button>
+                    <ConfirmDeleteDialog user={user} onConfirm={onDeleteUser} />
                   </td>
                 </tr>
               ))

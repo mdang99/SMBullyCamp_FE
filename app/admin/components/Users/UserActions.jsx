@@ -3,16 +3,18 @@ import { useState } from "react";
 export default function UserActions({ onAddUser, onClose }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!username || !password) return alert("Vui lòng nhập đầy đủ thông tin.");
+    if (!username || !password || !email) return alert("Vui lòng nhập đầy đủ thông tin.");
 
     // Gọi hàm onAddUser với dữ liệu người dùng
-    onAddUser({ username, password });
+    onAddUser({ username, password, email });
     
     setUsername("");
     setPassword("");
+    setEmail("")
     onClose();
   };
 
@@ -25,6 +27,14 @@ export default function UserActions({ onAddUser, onClose }) {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          className="border rounded-md px-4 py-2 bg-input text-foreground focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+          required
+        />
+        <input
+          type="text"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="border rounded-md px-4 py-2 bg-input text-foreground focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary"
           required
         />

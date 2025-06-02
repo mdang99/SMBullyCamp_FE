@@ -1,3 +1,4 @@
+// app/signup/page.js
 'use client'
 
 import { useState } from 'react'
@@ -8,12 +9,18 @@ export default function SignUp() {
   const router = useRouter()
 
   const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   function validateUsername(name) {
-    return name.trim().length >= 3 // username tối thiểu 3 ký tự
+    return name.trim().length >= 3
+  }
+
+  function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
   async function handleSubmit(e) {
@@ -24,22 +31,55 @@ export default function SignUp() {
       setError('Username phải có ít nhất 3 ký tự')
       return
     }
+    if (!validateEmail(email)) {
+      setError('Email không hợp lệ')
+      return;
+    }
     if (password.length < 6) {
       setError('Mật khẩu phải ít nhất 6 ký tự')
       return
     }
+    if (password !== confirmPassword) {
+      setError('Mật khẩu xác nhận không khớp')
+      return
+    }
 
     setLoading(true)
-    try {
-      // Giả lập call API đăng ký
-      await new Promise(resolve => setTimeout(resolve, 1500))
+    // Lưu lại thời điểm bắt đầu request
+    const startTime = Date.now(); 
 
-      alert('Đăng ký thành công, vui lòng đăng nhập.')
-      router.push('/signin')
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/signup`, { // API đăng ký
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, email, password, role: 'user' }), 
+      })
+
+      if (!res.ok) {
+        const errorData = await res.json()
+        throw new Error(errorData.message || 'Đăng ký thất bại.')
+      }
+
+      // Tính toán thời gian còn lại cần chờ để đủ 3 giây
+      const elapsedTime = Date.now() - startTime;
+      const remainingTime = 1500 - elapsedTime; // 3000ms = 3s
+
+      // Đảm bảo spinner quay ít nhất 3 giây
+      await new Promise(resolve => setTimeout(resolve, remainingTime > 0 ? remainingTime : 0));
+
+      alert('Đăng ký thành công! Vui lòng đăng nhập.');
+      router.push('/signin');
+
     } catch (err) {
-      setError('Đăng ký thất bại, vui lòng thử lại')
+      setError(err.message)
+      console.error("Signup error:", err);
     } finally {
-      setLoading(false)
+      // setLoading(false) // Không đặt ở đây nữa, vì đã có setTimeout
+      if (error) { // Chỉ tắt loading nếu có lỗi và không chuyển hướng
+          setLoading(false);
+      }
     }
   }
 
@@ -63,6 +103,15 @@ export default function SignUp() {
             className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            disabled={loading}
+            required
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
             type="password"
             placeholder="Mật khẩu"
             value={password}
@@ -71,11 +120,20 @@ export default function SignUp() {
             required
             className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          <input
+            type="password"
+            placeholder="Xác nhận mật khẩu"
+            value={confirmPassword}
+            onChange={e => setConfirmPassword(e.target.value)}
+            disabled={loading}
+            required
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition flex justify-center items-center"
+            className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition flex justify-center items-center"
           >
             {loading ? (
               <svg
@@ -104,7 +162,7 @@ export default function SignUp() {
         </form>
 
         <p className="mt-4 text-center">
-          Bạn đã có tài khoản?{' '}
+          Đã có tài khoản?{' '}
           <Link href="/signin" className="text-blue-600 hover:underline">
             Đăng nhập ngay
           </Link>
