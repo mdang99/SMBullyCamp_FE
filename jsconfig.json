@@ -2,7 +2,15 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@admin/*": ["src/modules/admin/*"],
+      "@components/*": ["src/components/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@lib/*": ["src/lib/*"],
+      "@stores/*": ["stores/*"],
+      "@utils/*": ["src/modules/admin/utils/*"],
+      "@services/*": ["src/modules/admin/services/*"],
+      "@constants/*": ["src/modules/admin/constants/*"]
     }
   }
 }

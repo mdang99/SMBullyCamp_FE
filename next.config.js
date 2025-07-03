@@ -1,6 +1,10 @@
-// next.config.js (CommonJS)
+// next.config.js
+const withTM = require("next-transpile-modules")([
+  "@balkangraph/familytree.js",
+]);
+
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
 };
 
-module.exports = nextConfig;
+module.exports = withTM(nextConfig);
