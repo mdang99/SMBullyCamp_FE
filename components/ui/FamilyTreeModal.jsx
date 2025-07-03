@@ -200,7 +200,7 @@ export default function FamilyTreeModal({ isOpen, onClose, pets }) {
             lazyLoading: true,
             enableSearch: false,
             nodeMenu: false,
-            // enablePan: false,
+            // enablePan: false,test
             scaleInitial: FamilyTree.match.boundary,
             rootId: pets[0]?.code,
             nodeBinding: {
