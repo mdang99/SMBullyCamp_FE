@@ -9,20 +9,17 @@ export default function UserHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  const navItems = [
-    { name: "Trang chủ", href: "/welcome" },
-    { name: "Cây phả hệ", href: "/familytree" },
-  ];
+  const navItems = [{ name: "Trang chủ", href: "/welcome" }];
 
   const isActive = (href) => pathname === href;
 
   return (
-    <header className="bg-gradient-to-r from-[#f9ede4] to-[#fffaf5] shadow-md sticky top-0 z-50 border-b border-[#e4d2c0]">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-        {/* Logo */}
+    <header className="bg-gradient-to-r from-[#ecdac6] via-[#e2b36c] to-[#8a4b1f] text-[#3a1f0f] shadow-md">
+      <div className="max-w-7xl mx-auto px-4 py-2 md:py-3 flex justify-between items-center">
+        {/* Logo + Text */}
         <Link href="/" className="flex items-center gap-2">
-          <img src="./img/vector-mau.svg" alt="Logo" className="w-8 h-8" />
-          <span className="text-lg font-bold text-[#4e342e]">
+          <img src="/img/logo.png" alt="Logo" className="w-10 h-10" />
+          <span className="text-xl md:text-2xl font-bold tracking-wide">
             SM Bully Camp
           </span>
         </Link>
@@ -33,10 +30,10 @@ export default function UserHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
                 isActive(item.href)
-                  ? "bg-gradient-to-r from-[#a97458] to-[#6d4c41] text-white shadow-md"
-                  : "text-[#5d4037] hover:text-[#3e2723] hover:bg-[#f1e5dc]"
+                  ? "bg-[#673407] text-white shadow-md"
+                  : "hover:bg-[#fce9d3] hover:text-[#673407]"
               }`}
             >
               {item.name}
@@ -44,17 +41,17 @@ export default function UserHeader() {
           ))}
         </nav>
 
-        {/* Mobile toggle */}
+        {/* Mobile menu button */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden text-[#5d4037]"
+          className="md:hidden text-[#673407]"
           aria-label="Toggle menu"
         >
           {open ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile nav dropdown */}
+      {/* Mobile dropdown */}
       {open && (
         <div className="md:hidden px-4 pb-4">
           {navItems.map((item) => (
@@ -62,10 +59,10 @@ export default function UserHeader() {
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className={`block px-4 py-2 rounded-md text-sm font-medium ${
+              className={`block px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
                 isActive(item.href)
-                  ? "bg-gradient-to-r from-[#a97458] to-[#6d4c41] text-white shadow"
-                  : "text-[#5d4037] hover:text-[#3e2723] hover:bg-[#f1e5dc]"
+                  ? "bg-[#673407] text-white shadow"
+                  : "text-[#3a1f0f] hover:bg-[#fce9d3] hover:text-[#673407]"
               }`}
             >
               {item.name}

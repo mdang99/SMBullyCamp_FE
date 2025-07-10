@@ -8,8 +8,21 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-vietnam)", "sans-serif"], // <== thêm dòng này
+      },
+
+      colors: {
+        brown: {
+          900: "#1C1105",
+          800: "#3D1F14",
+          700: "#6d4c41",
+        },
+        ivory: "#e0d6c8",
+      },
       animation: {
         "fade-in-down": "fadeInDown 0.3s ease-out",
+        "pulse-slow": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       keyframes: {
         fadeInDown: {

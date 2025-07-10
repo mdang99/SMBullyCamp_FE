@@ -3,7 +3,6 @@ import UserActions from "../Users/UserActions";
 import UserTableHead from "../../../../../components/ui/UserTableHead";
 import UserTableRow from "../../../../../components/ui/UserTableRow";
 import Modal from "../../../../../components/ui/modal";
-import ConfirmDeleteDialog from "../../../../../components/ConfirmDeleteDialog";
 
 export default function UserManagement({ users, onAddUser, onDeleteUser }) {
   const [isModalOpen, setIsModalOpen] = useState(false);

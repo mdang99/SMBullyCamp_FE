@@ -261,7 +261,6 @@ export default function FamilyTreeModal({ isOpen, onClose, pets }) {
           });
         });
     }
-    console.log("😤 --> requestAnimationFrame --> pets🤯", pets);
 
   }, [isOpen, petNodes]);
 
